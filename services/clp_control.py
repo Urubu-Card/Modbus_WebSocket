@@ -81,10 +81,10 @@ class Modbus_Control:
         finally:
             self.conexao.FecharConexao()
             
-    def Write_Register(self,address:int,value):
+    async def Write_Register(self,address:int,value):
         
         try:
-            resultado = self.cliente.write_register(address,value)
+            resultado = await self.cliente.write_register(address,value)
             if not resultado.isError():
                 return f"Valor({value} foi inserido com sucesso no endereço:{address} ) "
             else:
@@ -100,9 +100,13 @@ class Modbus_Control:
         
 
 if __name__ == "__main__":
-    client = Modbus_Control("127.0.0.1",5020)
-    valor = int(input("Insira valor:"))
-    while True:
-        client.Write_Register(0,valor)
-        valor += 1
-        time.sleep(1)
+    async def main():
+        client = Modbus_Control("127.0.0.1",5020)
+        await client.Conectar()
+        valor = int(input("Insira valor:"))
+        while True:
+            await client.Write_Register(0,valor)
+            valor += 1
+            time.sleep(1)
+
+    asyncio.run(main())

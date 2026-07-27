@@ -2,6 +2,7 @@
 from pymodbus.client import AsyncModbusTcpClient
 from pymodbus.exceptions import ModbusException
 import logging
+import asyncio
 
 logging.getLogger('pymodbus').setLevel(logging.CRITICAL)
 
@@ -22,7 +23,7 @@ class Conexao:
             if self.cliente.connected:
                 return self.cliente
             else:
-                self.client = None
+                self.cliente = None
                 return self.cliente
         except ModbusException:
             self.cliente = None
@@ -32,8 +33,19 @@ class Conexao:
         if self.cliente is not None:
             self.cliente.close()
 
+async def main():
+    conexao_clp = Conexao("127.0.0.1", 5020)
+    
+    cliente = await conexao_clp.Conectar()
+    print(cliente)
+    
+
+
 if __name__ =="__main__":
+    async def main():
+        conexao_clp = Conexao("127.0.0.1", 5020)
+        
+        cliente = await conexao_clp.Conectar()
+        print(cliente)
     
-    cliente = Conexao("127.0.0.1",5020)
-    
-    cliente
+    asyncio.run(main())
