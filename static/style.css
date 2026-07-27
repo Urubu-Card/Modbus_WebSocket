@@ -1,0 +1,463 @@
+/* ==========================================================================
+   1. VARIÁVEIS DO TEMA ROXO DARK MODE
+   ========================================================================== */
+:root {
+  /* Cores de Fundo (Dark) */
+  --bg-main: #0d0b14;             /* Fundo principal bem escuro */
+  --bg-surface: #161224;          /* Superfície de cards e containers */
+  --bg-surface-hover: #201a34;    /* Estados de hover em cards */
+  --bg-input: #1a152b;            /* Fundo de campos de texto */
+
+  /* Roxos de Destaque (Acentos Neon/Vibrantes) */
+  --purple-light: #e9d5ff;
+  --purple-primary: #a855f7;      /* Cor principal de ação */
+  --purple-hover: #9333ea;        /* Hover de botões */
+  --purple-active: #7e22ce;
+  --purple-glow: rgba(168, 85, 247, 0.25); /* Sombra luminosa */
+
+  /* Cores de Texto */
+  --text-main: #f3f4f6;           /* Texto principal claro */
+  --text-muted: #a1a1aa;          /* Texto secundário */
+  --text-dim: #71717a;            /* Textos bem discretos */
+
+  /* Bordas e Linhas */
+  --border-color: #2e264a;
+  --border-focus: #a855f7;
+
+  /* Status */
+  --success: #34d399;
+  --error: #f87171;
+  --warning: #fbbf24;
+
+  /* Fontes e Geometria */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, Consolas, monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-dark: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 15px var(--purple-glow);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   2. RESET UNIVERSAL E CONFIGURAÇÃO BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  color-scheme: dark; /* Informa o navegador que a página é dark */
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   3. TIPOGRAFIA COMPLETA (PARÁGRAFOS, SPANS E TEXTOS INLINE)
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+/* Parágrafos e Estilos de Texto */
+p {
+  margin-bottom: 1.25rem;
+  color: var(--text-main);
+}
+
+p.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: var(--purple-light);
+  line-height: 1.5;
+}
+
+/* Tratamento completo para <span> e elementos inline */
+span {
+  display: inline;
+}
+
+span.highlight {
+  color: var(--purple-primary);
+  font-weight: 600;
+}
+
+span.subtext {
+  font-size: 0.875em;
+  color: var(--text-muted);
+}
+
+a {
+  color: var(--purple-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--purple-light);
+  text-decoration: underline;
+  text-shadow: var(--shadow-glow);
+}
+
+strong, b {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+em, i {
+  font-style: italic;
+  color: var(--purple-light);
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+mark {
+  background-color: rgba(168, 85, 247, 0.25);
+  color: var(--purple-light);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--purple-primary);
+}
+
+abbr[title] {
+  text-decoration: underline dotted var(--purple-primary);
+  cursor: help;
+}
+
+kbd {
+  background-color: var(--bg-surface);
+  color: var(--purple-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.15em 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  box-shadow: 0 2px 0 var(--border-color);
+}
+
+sub, sup {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+/* ==========================================================================
+   4. ESTRUTURA SEMÂNTICA HTML5
+   ========================================================================== */
+header, footer, nav, main, aside, section, article {
+  display: block;
+}
+
+header {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Acordeões / Collapsibles (<details> e <summary>) */
+details {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+
+details[open] {
+  border-color: var(--purple-primary);
+}
+
+summary {
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+
+summary:hover {
+  color: var(--purple-primary);
+}
+
+/* ==========================================================================
+   5. CITAÇÕES E CÓDIGO
+   ========================================================================== */
+blockquote {
+  border-left: 4px solid var(--purple-primary);
+  background-color: var(--bg-surface);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  background-color: rgba(168, 85, 247, 0.15);
+  color: var(--purple-light);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: #05040a;
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #e2e8f0;
+}
+
+/* ==========================================================================
+   6. LISTAS E TABELAS DARK
+   ========================================================================== */
+ul, ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+li::marker {
+  color: var(--purple-primary);
+}
+
+/* Tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+th, td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background-color: #1f1836;
+  color: var(--purple-light);
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background-color: var(--bg-surface-hover);
+}
+
+/* ==========================================================================
+   7. FORMULÁRIOS E CONTROLES AVANÇADOS
+   ========================================================================== */
+fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+legend {
+  color: var(--purple-light);
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+
+label {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--text-main);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #ffffff;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--purple-glow);
+  background-color: var(--bg-surface);
+}
+
+/* Checkboxes e Radios com estilo roxo */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--purple-primary);
+  width: 1.15rem;
+  height: 1.15rem;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Barras de Progresso */
+progress {
+  width: 100%;
+  height: 12px;
+  appearance: none;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--bg-input);
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--purple-primary);
+}
+
+/* ==========================================================================
+   8. COMPONENTES E BOTÕES
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--purple-primary);
+  color: #ffffff;
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  box-shadow: var(--shadow-dark);
+}
+
+.btn:hover {
+  background-color: var(--purple-hover);
+  box-shadow: var(--shadow-glow);
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--purple-light);
+  border: 1px solid var(--purple-primary);
+}
+
+.btn-outline:hover {
+  background-color: rgba(168, 85, 247, 0.15);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: rgba(168, 85, 247, 0.2);
+  color: var(--purple-light);
+  border: 1px solid var(--purple-primary);
+  border-radius: 999px;
+}
+
+/* Cards & Layout */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-dark);
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: var(--purple-primary);
+  background-color: var(--bg-surface-hover);
+}
+
+/* Mídia */
+img, video {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
