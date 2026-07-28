@@ -25,61 +25,51 @@ class Modbus_Control:
         try:
             leitor = await self.cliente.read_coils(address=address,count=count)
             if not leitor.isError():
-                return [bool(bits) for bits in leitor.bits]
+                if count>1:
+                    return [bool(bits) for bits in leitor.bits]
+                else:
+                    return [leitor.bits[0]]
             return f'Erro ao ler: {leitor}'
         except ModbusException as e:
             return f'Erro: {e}'
 
-    def Escrever_Coil(self, address: int, value: bool):
+    async def Escrever_Coil(self, address: int, value: bool):
         try:
-            resultado = self.cliente.write_coil(address=address, value=value)
+            resultado = await self.cliente.write_coil(address=address, value=value)
             if bool(resultado):
                 return f'Valor {value} registrado na coil {address}'
             return f'Erro ao escrever na coil: {resultado}'
         except ModbusException as e:
             return f'Erro: {e}'
-        finally:
-            self.conexao.FecharConexao()
+        
 
-    async def Ler_Coil_RealTime(self, address: int):
-        try:
-            i = 0
-            while True:
-                leitor = self.cliente.read_coils(address)
-                if not leitor.isError():
-                    dado = str(bool(leitor.bits[0])).upper()
-                    print(f'Req {i} | Coil {address}: {dado}')
-                    i += 1
-                    await asyncio.sleep(0.5)
-                else:
-                    break
-        except (ModbusException, KeyboardInterrupt):
-            pass
-        finally:
-            self.conexao.FecharConexao()
 
-    def InputStatus(self, address: int):
+    async def InputStatus(self, address: int ,count :int =1):
         try:
-            leitor = self.cliente.read_discrete_inputs(address)
+            leitor =  await self.cliente.read_discrete_inputs(address=address,count=count)
             if not leitor.isError():
-                return bool(leitor.bits[0])
+                if count >1:
+                    return [bool(bits)for bits in leitor.bits]
+                else:
+                    return [bool(leitor.bits[0])]
             return f'Erro: {leitor}'
         except ModbusException as e:
             return f'Erro: {e}'
-        finally:
-            self.conexao.FecharConexao()
 
-    def HoldingRegister(self, address: int):
+
+    async def HoldingRegister(self, address: int,count:int =1):
         try:
-            leitor = self.cliente.read_holding_registers(address)
+            leitor = await self.cliente.read_holding_registers(address,count=count)
             if not leitor.isError():
-                return leitor.registers[0]
+                if count>1:
+                    return [registros for registros in leitor.registers]
+                else:
+                    return [leitor.registers[0]]
             return f'Erro: {leitor}'
             
         except ModbusException as e:
             return f'Erro: {e}'
-        finally:
-            self.conexao.FecharConexao()
+        
             
     async def Write_Register(self,address:int,value):
         
@@ -94,19 +84,18 @@ class Modbus_Control:
         except ModbusException as e:
             return f"Ocoreu um erro: {e}"    
             
-        finally:
-            self.conexao.FecharConexao()
-        
+     
         
 
 if __name__ == "__main__":
     async def main():
         client = Modbus_Control("127.0.0.1",5020)
         await client.Conectar()
-        valor = int(input("Insira valor:"))
-        while True:
-            await client.Write_Register(0,valor)
-            valor += 1
-            time.sleep(1)
+        print(await client.HoldingRegister(1,8))
+        #valor = int(input("Insira valor:"))
+        #while True:
+        #    print(await client.Escrever_Coil(0,valor))
+        #    valor += 1
+        #    time.sleep(1)
 
     asyncio.run(main())
