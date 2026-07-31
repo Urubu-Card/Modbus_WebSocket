@@ -18,16 +18,19 @@ class Conexao:
         "Faz a conexão com o CLP"
         
         try:
-            self.cliente = AsyncModbusTcpClient(self.ip, port=self.porta)
+            self.cliente = AsyncModbusTcpClient(host=self.ip, 
+                                                port=self.porta,
+                                                timeout=5.0,
+                                                retries=3)
             await self.cliente.connect()
             if self.cliente.connected:
                 return self.cliente
             else:
-                self.cliente = None
+                
                 return self.cliente
-        except ModbusException:
-            self.cliente = None
-            return None
+        except ModbusException or Exception as e:
+            self.cliente = e
+            return self
 
     def FecharConexao(self):
         if self.cliente is not None:

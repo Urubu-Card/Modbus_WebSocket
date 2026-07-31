@@ -19,6 +19,7 @@ class Modbus_Control:
         return self.cliente
 
     def isConnected(self):
+        ''' Retorna valor bool indicando status da conexão'''
         return self.cliente is not None and self.cliente.connected
 
     async def Ler_Coil(self, address: int, count :int = 1):
@@ -41,8 +42,6 @@ class Modbus_Control:
             return f'Erro ao escrever na coil: {resultado}'
         except ModbusException as e:
             return f'Erro: {e}'
-        
-
 
     async def InputStatus(self, address: int ,count :int =1):
         try:
@@ -56,7 +55,6 @@ class Modbus_Control:
         except ModbusException as e:
             return f'Erro: {e}'
 
-
     async def HoldingRegister(self, address: int,count:int =1):
         try:
             leitor = await self.cliente.read_holding_registers(address,count=count)
@@ -69,8 +67,7 @@ class Modbus_Control:
             
         except ModbusException as e:
             return f'Erro: {e}'
-        
-            
+                   
     async def Write_Register(self,address:int,value):
         
         try:
@@ -91,7 +88,7 @@ if __name__ == "__main__":
     async def main():
         client = Modbus_Control("127.0.0.1",5020)
         await client.Conectar()
-        print(await client.HoldingRegister(1,8))
+        print(await client.Ler_Coil(1,2))
         #valor = int(input("Insira valor:"))
         #while True:
         #    print(await client.Escrever_Coil(0,valor))
