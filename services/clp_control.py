@@ -1,6 +1,4 @@
 from pymodbus.exceptions import ModbusException
-import asyncio
-import time
 try:
     from .clp_conn  import Conexao 
 except ImportError:
@@ -37,7 +35,7 @@ class Modbus_Control:
     async def Escrever_Coil(self, address: int, value: bool):
         try:
             resultado = await self.cliente.write_coil(address=address, value=value)
-            if bool(resultado):
+            if not resultado.isError():
                 return f'Valor {value} registrado na coil {address}'
             return f'Erro ao escrever na coil: {resultado}'
         except ModbusException as e:
@@ -85,10 +83,13 @@ class Modbus_Control:
         
 
 if __name__ == "__main__":
+    import asyncio
+    import time
+    
     async def main():
-        client = Modbus_Control("127.0.0.1",5020)
+        client = Modbus_Control("192.168.0.2",5020)
         await client.Conectar()
-        print(await client.Ler_Coil(1,2))
+        print(await client.Write_Register(2,20))
         #valor = int(input("Insira valor:"))
         #while True:
         #    print(await client.Escrever_Coil(0,valor))

@@ -36,12 +36,6 @@ class Conexao:
         if self.cliente is not None:
             self.cliente.close()
 
-async def main():
-    conexao_clp = Conexao("127.0.0.1", 5020)
-    
-    cliente = await conexao_clp.Conectar()
-    print(cliente)
-    
 
 
 if __name__ =="__main__":

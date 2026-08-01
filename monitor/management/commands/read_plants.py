@@ -2,19 +2,32 @@ import asyncio
 from django.core.management.base import BaseCommand
 from channels.layers import get_channel_layer
 from services.clp_control import Modbus_Control
+from ...models import Clp
+from asgiref.sync import sync_to_async
+
+
+def busca_clps():
+    dados = []
+    resultado =  Clp.objects.filter(ativo=True)
+    for clp in resultado:
+        dados.append ( {
+            "nome":clp.nome,
+            "ip":clp.ip,
+            "porta":clp.porta,
+        })
+    return dados
+        
 
 class Command(BaseCommand):
     
     help = "Comando Modbus para distrubuição dos WebSockets"
     
-    async def poll_loop(self):
+    async def poll_loop(self,nome,ip,port):
         channel_layer =get_channel_layer()
-        client = Modbus_Control("127.0.0.1",5020)
+        client = Modbus_Control(ip,port)
         
         await client.Conectar()
-        
-        
-            
+
         if client.isConnected():
             try:
                 while True:
@@ -35,7 +48,7 @@ class Command(BaseCommand):
 
                     #* Holding Register
                     
-                    holding_result    =  await client.InputStatus(0,3)
+                    holding_result    =  await client.HoldingRegister(0,3)
                     data['nivel']        = holding_result[0]  
                     data['pressao']      = holding_result[1]  
                     data['velocidade']   = holding_result[2]  
@@ -43,8 +56,8 @@ class Command(BaseCommand):
                     
                     if data:
                         await channel_layer.group_send(
-                            'plant_data',
-                            {'type':"plant_update",
+                            f'plant_{nome}',
+                            {'type':"plant.update",
                             'data':data}
                         )
                         self.stdout.write(f"Enviando data:{data}")
@@ -61,4 +74,11 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("Não foi possivel conectar ao servidor"))
                 
     def handle(self, *args, **options):
-        asyncio.run(self.poll_loop())
+        asyncio.run(self.main())
+        
+        
+    async def main(self,):
+
+        clps = await sync_to_async(busca_clps)()#? Genial isso ele primeiro transforma e depois chama
+        lista_de_clps =[self.poll_loop(clp['nome'],clp['ip'],clp['porta']) for clp in clps]
+        await asyncio.gather(*lista_de_clps)
