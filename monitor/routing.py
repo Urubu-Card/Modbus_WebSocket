@@ -1,6 +1,6 @@
 from django.urls import re_path
-from . import cosumers
+from . import consumers
 
 websocket_urlpatterns = [
-    re_path(r"ws/plant/$",cosumers.PlantMonitorCosumer.as_asgi()),
+    re_path(r"ws/plant/(?P<nome>\w+)/$",consumers.PlantMonitorConsumers.as_asgi()),
 ]

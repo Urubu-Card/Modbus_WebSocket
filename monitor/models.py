@@ -7,7 +7,7 @@ class Clp(models.Model):
     nome   = models.CharField(max_length=45)
     ip     = models.GenericIPAddressField(protocol='both')
     porta  = models.CharField(max_length=45)
-    ativo  = models.CharField(max_length=45)
+    ativo  = models.BooleanField()
 
     class Meta:
         db_table = 'clp'

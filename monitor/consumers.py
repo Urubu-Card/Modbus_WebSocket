@@ -3,11 +3,9 @@ import json
 from   channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class PlantMonitorCosumer(AsyncWebsocketConsumer):
+class PlantMonitorConsumers(AsyncWebsocketConsumer):
     async def connect(self):
-        self.group_name ="plant_data"
-        
-    
+        self.group_name =f"plant_{self.scope['url_route']['kwargs']['nome']}"
         await self.channel_layer.group_add(self.group_name,self.channel_name)
         await self.accept()
         

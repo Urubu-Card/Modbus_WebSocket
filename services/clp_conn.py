@@ -25,9 +25,7 @@ class Conexao:
             await self.cliente.connect()
             if self.cliente.connected:
                 return self.cliente
-            else:
-                
-                return self.cliente
+
         except ModbusException or Exception as e:
             self.cliente = e
             return self

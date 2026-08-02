@@ -4,6 +4,7 @@ from channels.layers import get_channel_layer
 from services.clp_control import Modbus_Control
 from ...models import Clp
 from asgiref.sync import sync_to_async
+import re
 
 
 def busca_clps():
@@ -55,12 +56,13 @@ class Command(BaseCommand):
                     
                     
                     if data:
+                        nome_Planta = re.sub(r'[^a-zA-Z0-9._-]','',nome)[:99]
                         await channel_layer.group_send(
-                            f'plant_{nome}',
+                            f'plant_{nome_Planta}',
                             {'type':"plant.update",
                             'data':data}
                         )
-                        self.stdout.write(f"Enviando data:{data}")
+                        self.stdout.write(f"Enviando para {nome_Planta} data:{data}")
                         
                     else:
                         self.stdout.write(self.style.WARNING("Deu merda"))
